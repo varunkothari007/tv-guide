@@ -22,7 +22,7 @@
                 %tr
                   %th{:scope => "row"}= i+=1
                   %td=tv.name
-  / = will_paginate @transmitters
+    = will_paginate @transmitters
 
 %h1 Episode
 %table.table
@@ -53,3 +53,4 @@
                   %td=es1.source_url
                   %td=es1.start_time
                   %td=es1.end_time
+    = will_paginate @episode
