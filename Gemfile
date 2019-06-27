@@ -65,4 +65,4 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'jquery-rails'
 gem "twitter-bootstrap-rails"
 gem 'haml-rails'
-gem 'will_paginate', '~> 3.1.0'
+gem 'will_paginate', '~> 3.1.7'

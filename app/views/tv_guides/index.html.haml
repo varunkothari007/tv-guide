@@ -1,35 +1,39 @@
-%h1 TV
-%table.table
-  %thead
-    %tr
-      %th{:scope => "col"} S no.
-      %th{:scope => "col"} Name
-  %tbody.main
-    - i = 0
-    - @transmitters.each do|tv|
-      %tr
-        %th{:scope => "row"}= i+=1
-        %td=tv.name
-        %td 
-          %table.table
-            %thead
-              %tr
-                %th{:scope => "col"}= tv.programs.count
-                %th{:scope => "col"} Program
-            %tbody
-              - i = 0
-              - tv.programs.each do|tv|
-                %tr
-                  %th{:scope => "row"}= i+=1
-                  %td=tv.name
-    = will_paginate @transmitters
+/ %h1 TV
+/ %table.table
+/   %thead
+/     %tr
+/       %th{:scope => "col"} S no.
+/       %th{:scope => "col"} Name
+/   %tbody.main
+/     - i = 0
+/     - @transmitters.each do|tv|
+/       %tr
+/         %th{:scope => "row"}= i+=1
+/         %td=tv.name
+/         %td 
+/           %table.table
+/             %thead
+/               %tr
+/                 %th{:scope => "col"}= tv.programs.count
+/                 %th{:scope => "col"} Program
+/             %tbody
+/               - i = 0
+/               - tv.programs.each do|tv|
+/                 %tr
+/                   %th{:scope => "row"}= i+=1
+/                   %td=tv.name
+/ Transmitters Pagination: 
+/ = will_paginate(@transmitters)
 
-%h1 Episode
+%h1 Episode (Date: #{Episode.first.program_date}, count: #{Episode.count}) 
+= will_paginate(@episode)
+%br
 %table.table
   %thead
     %tr
-      %th{:scope => "col"}= @episode.count
+      %th{:scope => "col"} #
       %th{:scope => "col"} Name
+      %th{:scope => "col"} TV Channel
   %tbody.main
     - i = 0
     - @episode.group_by(&:program_id).each do|k,es|
@@ -41,16 +45,16 @@
           %table.table
             %thead
               %tr
-                %th{:scope => "col"}= es.count
-                %th{:scope => "col"} Name
-                %th S Time
-                %th E Time
+                %th{:scope => "col"} #
+                %th{:scope => "col"} url
+                %th Start Time
+                %th End Time
             %tbody.main
               - j = 0
               - es.each do|es1|
                 %tr
                   %th{:scope => "row"}= j+=1
                   %td=es1.source_url
-                  %td=es1.start_time
-                  %td=es1.end_time
-    = will_paginate @episode
+                  %td=es1.start_time.strftime("%H : %M")
+                  %td=es1.end_time.strftime("%H : %M")
+= will_paginate(@episode)
