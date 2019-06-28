@@ -25,7 +25,9 @@
 / Transmitters Pagination: 
 / = will_paginate(@transmitters)
 
-%h1 Episode (Date: #{Episode.first.program_date}, count: #{Episode.count}) 
+%h1 Episode 
+- if Episode.first.present?
+  (Date: #{Episode.first.program_date}, count: #{Episode.count}) 
 = will_paginate(@episode)
 %br
 %table.table.table-bordered
