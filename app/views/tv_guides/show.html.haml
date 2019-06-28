@@ -1,0 +1,63 @@
+
+
+.h2 Episode
+%p
+  =@episode.to_json
+
+%hr
+.h2 Program
+%p
+  =@episode.program.to_json
+.h2 Transmitter
+%p
+  =@episode.program.transmitter.to_json
+
+%hr
+.h2 Episode Info
+%p  
+  =@episode.episode_infos.to_json
+
+%hr
+.h2 Rating
+%p  
+  =@episode.ratings.to_json
+/ %ul
+/   %li
+/     Name =======>
+/     =@episode.program.name
+/   %li
+/     id =======>
+/     =@episode.id
+/   %li
+/     program_id =======>
+/     =@episode.program_id
+/   %li
+/     program_date =======>
+/     =@episode.program_date
+/   %li
+/     start_time =======>
+/     =@episode.start_time
+/   %li
+/     end_time =======>
+/     =@episode.end_time
+/   %li
+/     duration =======>
+/     =@episode.duration
+/   %li
+/     source_url =======>
+/     =@episode.source_url
+/   %li
+/     preview_video_url =======>
+/     =@episode.preview_video_url
+/   %li
+/     is_scraped =======>
+/     =@episode.is_scraped
+/   %li
+/     active =======>
+/     =@episode.active
+/   %li
+/     created_at =======>
+/     =@episode.created_at
+/   %li
+/     updated_at =======>
+/     =@episode.updated_at

@@ -28,7 +28,7 @@
 %h1 Episode (Date: #{Episode.first.program_date}, count: #{Episode.count}) 
 = will_paginate(@episode)
 %br
-%table.table
+%table.table.table-bordered
   %thead
     %tr
       %th{:scope => "col"} #
@@ -42,13 +42,15 @@
         %td=Program.find(k).name
         %td=Program.find(k).transmitter.name
         %td
-          %table.table
+          %table.table.table-bordered
             %thead
               %tr
                 %th{:scope => "col"} #
                 %th{:scope => "col"} url
                 %th Start Time
                 %th End Time
+                %th Date
+                %th view
             %tbody.main
               - j = 0
               - es.each do|es1|
@@ -57,4 +59,6 @@
                   %td=es1.source_url
                   %td=es1.start_time.strftime("%H : %M")
                   %td=es1.end_time.strftime("%H : %M")
+                  %td=es1.program_date
+                  %th=link_to "view", tv_guide_path(es1)
 = will_paginate(@episode)
