@@ -9,8 +9,10 @@ namespace :scrape do
 	  args.with_defaults(:message => "Thanks You")
 	  if args.date.nil?
 	  	Transmitter.new.get_transmitter
+	  	Transmitter.new.create_episode_info
 	  else
-	  	Transmitter.new.get_transmitter("#{args.date}")	
+	  	Transmitter.new.get_transmitter("#{args.date}")
+	  	Transmitter.new.create_episode_info
 	  end
 	end
 
