@@ -1,7 +1,7 @@
 class Episode < ApplicationRecord
 	has_many :episode_infos, dependent: :destroy
 	has_many :ratings, dependent: :destroy
-	validates :source_url, uniqueness: true
+	# validates :source_url, uniqueness: true
 	belongs_to :program
 	require 'open-uri'
 
@@ -34,15 +34,25 @@ class Episode < ApplicationRecord
 
 	def get_rating(doc)
 		rate_data = []
+		
 		doc.css('ul.rating-dots li').each do |li|
 			source_text = li.css("span").text rescue nil
-			rate = li.css("span")[1].attributes["data-rating"].value rescue 0
-			rate_data << { episode_id: id ,source: source_text, rating: rate }
+			rate = li.css("span")[1].attributes["data-rating"].value rescue nil
+			rating = Rating.source_present(id, source_text) if (source_text.present? && rate.present?)
+			unless rating.present?
+				rate_data << { episode_id: id ,source: source_text, rating: rate } if (source_text.present? && rate.present?)
+			end
 		end
-		s = doc.css("div.rating-stars").text.delete(" ").delete("\n").delete("\t") rescue nil
-		r = doc.css("div.rating-stars span")[1].attributes['data-rating'].value  rescue 0
-		rate_data << { episode_id: id ,source: s, rating: r }
-		Rating.create(rate_data)
+		
+		source_text = doc.css("div.rating-stars").text.delete(" ").delete("\n").delete("\t") rescue nil
+		rate = doc.css("div.rating-stars span")[1].attributes['data-rating'].value  rescue 0
+		rating = Rating.source_present(id, source_text) if (source_text.present? && rate.present?)
+		
+		unless (rating.present?)
+			rate_data << { episode_id: id ,source: source_text, rating: rate } if (source_text.present? && rate.present?)
+		end
+		
+		Rating.create(rate_data) if rate_data.present?
 	end
 
 	def get_video_url(doc)

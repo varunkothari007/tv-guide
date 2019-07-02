@@ -25,42 +25,30 @@
 / Transmitters Pagination: 
 / = will_paginate(@transmitters)
 
-%h1 Episode 
-- if Episode.first.present?
-  (Date: #{Episode.first.program_date}, count: #{Episode.count}) 
+
+%h1 Transmitter (count: #{Transmitter.count}) | Program (count: #{Program.count}) | Episode (count: #{Episode.count}) 
 = will_paginate(@episode)
 %br
 %table.table.table-bordered
   %thead
     %tr
-      %th{:scope => "col"} #
-      %th{:scope => "col"} Name
       %th{:scope => "col"} TV Channel
+      %th{:scope => "col"} Time
+      %th{:scope => "col"} P Name
+      %th{:scope => "col"} P genre
+      %th{:scope => "col"} P branch
+      %th{:scope => "col"} Date
+      %th 
   %tbody.main
     - i = 0
-    - @episode.group_by(&:program_id).each do|k,es|
+    - @episode.order(:created_at).each do|es|
       %tr
-        %th{:scope => "row"}= i+=1
-        %td=Program.find(k).name
-        %td=Program.find(k).transmitter.name
-        %td
-          %table.table.table-bordered
-            %thead
-              %tr
-                %th{:scope => "col"} #
-                %th{:scope => "col"} url
-                %th Start Time
-                %th End Time
-                %th Date
-                %th view
-            %tbody.main
-              - j = 0
-              - es.each do|es1|
-                %tr
-                  %th{:scope => "row"}= j+=1
-                  %td=es1.source_url
-                  %td=es1.start_time.strftime("%H : %M")
-                  %td=es1.end_time.strftime("%H : %M")
-                  %td=es1.program_date
-                  %th=link_to "view", tv_guide_path(es1)
+        %td=es.program.transmitter.name
+        %td="(#{es.start_time.strftime("%H : %M")}) - (#{es.end_time.strftime("%H : %M")})"
+        %td=link_to es.program.name, tv_guide_path(es)
+        %td=es.program.genre
+        %td=es.program.branch
+        %td=es.created_at.strftime("%v")
+        %th=link_to "view", tv_guide_path(es)
+       
 = will_paginate(@episode)

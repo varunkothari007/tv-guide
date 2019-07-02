@@ -126,14 +126,13 @@ class Transmitter < ApplicationRecord
 					source_url 		= row.css(".col-3 strong a").first.attributes['href'].value
 
 					transmitter = Transmitter.where(name: tv_name, tv_url: tv_href, title: tv_title).first_or_initialize
-					transmitter.save
+					transmitter.save 
 
 					program 		= Program.where(name: name , transmitter_id: transmitter.id, genre: genre, branch: branch ).first_or_initialize
 					program.save
 
-					episode 		= Episode.where(program_id: program.id, source_url: source_url).first_or_initialize
+					episode 		= Episode.where(program_id: program.id, source_url: source_url, start_time: time[0]).first_or_initialize
 					episode.update(program_date: program_date, start_time: time[0], end_time: time[1], duration: get_duration(time))
-
 				end
 				i+=1
 			rescue Exception => e
