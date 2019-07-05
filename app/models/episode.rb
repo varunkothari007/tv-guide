@@ -33,7 +33,7 @@ class Episode < ApplicationRecord
 			self.update(preview_video_url: video, is_scraped: true) 
 	    self.episode_infos.create(description: description, country: casts["Land"], year: casts["Jahr"],age_rating: casts["Altersfreigabe"], director: casts["Regie"],  producer: casts["Produzent"], script: casts["Drehbuch"], camera: casts["Kamera"], music: casts["Musik"], original_title: casts["Originaltitel"], actors: actors ,thumb: thumb, image_urls: image)
 	    get_rating(doc)
-	  rescue e
+	  rescue  StandardError => e
 	  	Rails.logger.info "================================================"
 	  	Rails.logger.info "Having some issues during storing episode info."
 	  	Rails.logger.info "#{e}"
