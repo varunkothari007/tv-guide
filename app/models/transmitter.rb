@@ -75,7 +75,11 @@ class Transmitter < ApplicationRecord
 	# end
 
 	def get_duration(time)
-		min =  (Time.parse(time[1]).to_i - Time.parse(time[0]).to_i)/60 rescue nil
+		# min =  (Time.parse(time[1]).to_i - Time.parse(time[0]).to_i)/60 rescue nil
+		s_time = Time.parse(time[0]).to_i
+		e_time = Time.parse(time[1]).to_i
+		e_time = (Time.parse(time[1]) + 1.day).to_i if ((e_time - s_time) < 0)
+		min =  (e_time - s_time)/60 rescue nil
 		return min  
 	end
 
@@ -84,8 +88,8 @@ class Transmitter < ApplicationRecord
 		puts "Left Episode ==> #{ep.count}"
 		print = "[#"
 		i = 0
-		ep.each do |e_info|
-			e_info.get_episode_info
+		ep.each do |e|
+			e.get_episode_info
 			print "#"
 			i+=1
 			puts "{ 100 done }" if 100 == i
@@ -122,7 +126,7 @@ class Transmitter < ApplicationRecord
 					#Episode  source_url: preview_video_url: 
 					program_date	= date #program_date
 					time 					= row.css(".col-2 strong")[0].text #start_time: end_time: duration:
-					time = time.delete(" ").split("-")
+					time          = time.delete(" ").split("-")
 					source_url 		= row.css(".col-3 strong a").first.attributes['href'].value
 
 					transmitter = Transmitter.where(name: tv_name, tv_url: tv_href, title: tv_title).first_or_initialize
