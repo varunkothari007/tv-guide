@@ -88,8 +88,8 @@ class Transmitter < ApplicationRecord
 		puts "Left Episode ==> #{ep.count}"
 		print = "[#"
 		i = 0
-		ep.each do |e|
-			e.get_episode_info
+		ep.each do |epis|
+			epis.get_episode_info
 			print "#"
 			i+=1
 			puts "{ 100 done }" if 100 == i
