@@ -95,7 +95,6 @@ class Episode < ApplicationRecord
 		video_arr.each do |url|
 			get_video_url = url if url.include?('https://video') && url.include?('.mp4')
 		end
-		binding.pry
 		get_video_url
 	end
 
