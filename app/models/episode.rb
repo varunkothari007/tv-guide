@@ -30,7 +30,7 @@ class Episode < ApplicationRecord
 			
 			param = {is_scraped: true} 
 			param.merge!(preview_video_url: video) if video.present?
-			self.update(params)
+			self.update(param)
 
 	    self.episode_infos.create(description: description, country: casts["Land"], year: casts["Jahr"],age_rating: casts["Altersfreigabe"], director: casts["Regie"],  producer: casts["Produzent"], script: casts["Drehbuch"], camera: casts["Kamera"], music: casts["Musik"], original_title: casts["Originaltitel"], actors: actors ,thumb: thumb, image_urls: image)
 	    get_rating(doc)
