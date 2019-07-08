@@ -66,3 +66,4 @@ gem 'jquery-rails'
 gem "twitter-bootstrap-rails"
 gem 'haml-rails'
 gem 'will_paginate', '~> 3.1.7'
+gem 'aws-sdk-s3', '~> 1'

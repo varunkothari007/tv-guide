@@ -20,6 +20,7 @@ class Transmitter < ApplicationRecord
 			get_transmitter(date)
 		end
 		create_episode_info
+		Episode.upload_preview_at_s3
 	end
 
 	# def get_transmitter(date=nil)
@@ -140,13 +141,13 @@ class Transmitter < ApplicationRecord
 				end
 				i+=1
 			rescue Exception => e
-				# p e
+				Rails.logger.info e
 				break
 			end
 			puts "page no. #{i}"
 			puts " Program count==> #{Program.count}"
-  		puts " Transmitter count==> #{Transmitter.count}"
-  		puts " Episode count==> #{Episode.count}"
+		puts " Transmitter count==> #{Transmitter.count}"
+		puts " Episode count==> #{Episode.count}"
 		end
 	end
 end
