@@ -60,20 +60,20 @@ class Episode < ApplicationRecord
 	def upload_video_at_s3(filename, filepath) 
 		begin
 			s3 = Aws::S3::Resource.new
-			obj = s3.bucket(ENV['AWS_S3_BUCKET']).object(video_filename)
+			obj = s3.bucket((ENV['AWS_S3_BUCKET'] || 'tv-guide-s3-bucket')).object(video_filename)
 			if obj.upload_file(filepath)
 				self.update(video_filename: filename) 
-				# File.delete(filepath) 
+				File.delete(filepath) 
 			end
 		rescue StandardError => e
-	  	Rails.logger.info "================================================upload_video_at_s3:72"
+	  	Rails.logger.info "================================================upload_video_at_s3:69"
 	  	Rails.logger.info e
 		end
 	end
 
 	def get_signed_url
 		# signer = Aws::S3::Presigner.new
-		# signer.presigned_url(:put_object, bucket: ENV['AWS_S3_BUCKET'], key: video_filename, acl: 'public-read', content_type: "video/mp4")
+		# signer.presigned_url(:put_object, bucket: (ENV['AWS_S3_BUCKET'] || 'tv-guide-s3-bucket'), key: video_filename, acl: 'public-read', content_type: "video/mp4")
 		"https://tv-guide-s3-bucket.s3.amazonaws.com/#{video_filename}"
 	end
 
