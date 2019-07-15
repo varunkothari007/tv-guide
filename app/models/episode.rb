@@ -7,6 +7,12 @@ class Episode < ApplicationRecord
 	
 	require 'open-uri'
 
+	before_save :store_s3_url
+
+	def store_s3_url
+		self.s3_url= get_signed_url if video_filename.present?
+	end
+
 	def get_episode_info
 
 		begin
@@ -43,6 +49,8 @@ class Episode < ApplicationRecord
 
 	# Episode.last.download_video
 	def download_video
+		# preview_video_url = "https://video.tvspielfilm.de/ivideo/video/10/9700610_1.mp4"
+
 		if preview_video_url.present?	
 			filename = Pathname.new(preview_video_url).basename
 			filename = filename.to_s rescue "#{Time.now.to_i}.mp4"
@@ -60,9 +68,10 @@ class Episode < ApplicationRecord
 	def upload_video_at_s3(filename, filepath) 
 		begin
 			s3 = Aws::S3::Resource.new
-			obj = s3.bucket((ENV['AWS_S3_BUCKET'] || 'tv-guide-s3-bucket')).object(video_filename)
+			obj = s3.bucket(ENV['AWS_S3_BUCKET'] || 'tv-guide-s3-bucket').object(filename)
 			if obj.upload_file(filepath)
 				self.update(video_filename: filename) 
+
 				File.delete(filepath) 
 			end
 		rescue StandardError => e
