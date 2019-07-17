@@ -1,54 +1,52 @@
-/ %h1 TV
-/ %table.table
-/   %thead
-/     %tr
-/       %th{:scope => "col"} S no.
-/       %th{:scope => "col"} Name
-/   %tbody.main
-/     - i = 0
-/     - @transmitters.each do|tv|
-/       %tr
-/         %th{:scope => "row"}= i+=1
-/         %td=tv.name
-/         %td 
-/           %table.table
-/             %thead
-/               %tr
-/                 %th{:scope => "col"}= tv.programs.count
-/                 %th{:scope => "col"} Program
-/             %tbody
-/               - i = 0
-/               - tv.programs.each do|tv|
-/                 %tr
-/                   %th{:scope => "row"}= i+=1
-/                   %td=tv.name
-/ Transmitters Pagination: 
-/ = will_paginate(@transmitters)
+.container
+  
+  .row
+    .col
+      %h1 Transmitter (count: #{Transmitter.count}) | Program (count: #{Program.count}) | Episode (count: #{Episode.count}) 
 
 
-%h1 Transmitter (count: #{Transmitter.count}) | Program (count: #{Program.count}) | Episode (count: #{Episode.count}) 
-= will_paginate(@episode)
-%br
-%table.table.table-bordered
-  %thead
-    %tr
-      %th{:scope => "col"} TV Channel
-      %th{:scope => "col"} Time
-      %th{:scope => "col"} P Name
-      %th{:scope => "col"} P genre
-      %th{:scope => "col"} P branch
-      %th{:scope => "col"} Date
-      %th 
-  %tbody.main
-    - i = 0
-    - @episode.order(:created_at).each do|es|
-      %tr
-        %td=es.program.transmitter.name
-        %td="(#{es.start_time.strftime("%H : %M")}) - (#{es.end_time.strftime("%H : %M")})"
-        %td=link_to es.program.name, tv_guide_path(es)
-        %td=es.program.genre
-        %td=es.program.branch
-        %td=es.created_at.strftime("%v")
-        %th=link_to "view", tv_guide_path(es)
-       
-= will_paginate(@episode)
+  .row
+    .col-md-4
+      = form_tag(scrape_tv_guides_path, method: :get) do 
+        = date_field_tag :date, nil, class: "form-control scrape_date" 
+        = submit_tag 'Scrape', class: "btn btn-primary"
+
+  .row
+    .col
+      = will_paginate(@episode)
+      
+  .row
+    .col
+      %table.table.table-bordered
+        %thead
+          %tr
+            %th{:scope => "col"} TV Channel
+            %th{:scope => "col"} Time
+            %th{:scope => "col"} P Name
+            %th{:scope => "col"} P genre
+            %th{:scope => "col"} P branch
+            %th{:scope => "col"} Date
+            %th 
+        %tbody.main
+          - i = 0
+          - @episode.order(:created_at).each do|es|
+            %tr
+              %td=es.program.transmitter.name
+              %td="(#{es.start_time.strftime("%H : %M")}) - (#{es.end_time.strftime("%H : %M")})"
+              %td=link_to es.program.name, tv_guide_path(es)
+              %td=es.program.genre
+              %td=es.program.branch
+              %td=es.created_at.strftime("%v")
+              %th=link_to "view", tv_guide_path(es)
+  .row
+    .col
+      = will_paginate(@episode)
+
+
+:css 
+  .scrape_date{
+    width: 140px;
+    display: inline-block;
+    padding: 0 0 0 12px;
+    height: 35px;
+  }

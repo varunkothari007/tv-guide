@@ -218,6 +218,8 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    sucker_punch (2.1.2)
+      concurrent-ruby (~> 1.0)
     temple (0.8.1)
     thor (0.20.3)
     thread_safe (0.3.6)
@@ -269,6 +271,7 @@ DEPENDENCIES
   selenium-webdriver
   spring
   spring-watcher-listen (~> 2.0.0)
+  sucker_punch (~> 2.0)
   turbolinks (~> 5)
   twitter-bootstrap-rails
   tzinfo-data
