@@ -10,14 +10,22 @@ class TvGuidesController < ApplicationController
   end
 
   def scrape
-  	if params[:date].present? 
-  		if Transmitter.new.get_scrape_date.include?(params[:date])
-	  		session[:scrape] = { start: true, date: params[:date] }
-	  		ScrapeJob.perform_async(params[:date])
-	  	else
-	  		session[:scrape] = { start: false, date: params[:date] }
-	  	end
+  	if params[:date].present?
+      sc = Scraping.where(status: false).count 
+      if sc<1
+    		if Transmitter.new.get_scrape_date.include?(params[:date])
+  	  		# session[:scrape] = { start: true, date: params[:date] }
+          Scraping.create({which_date: params[:date], status: false})
+  	  		ScrapeJob.perform_async(params[:date])
+          @msg = "Scrapping started for date #{params[:date]}."
+  	  	else
+          @msg = "Given date #{params[:date]} in not in scrapping range, Either past 2 days or next 5 days."
+  	  		# session[:scrape] = { start: false, date: params[:date] }
+  	  	end
+      else
+        @msg = "Scrapping running, Please wait to complete date."
+      end
   	end
-	  redirect_to root_path
+	  # redirect_to root_path
   end
 end

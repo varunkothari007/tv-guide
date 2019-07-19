@@ -144,10 +144,13 @@ class Transmitter < ApplicationRecord
 				Rails.logger.info e
 				break
 			end
-			puts "page no. #{i}"
-			puts " Program count==> #{Program.count}"
-		puts " Transmitter count==> #{Transmitter.count}"
-		puts " Episode count==> #{Episode.count}"
+			sc = Scraping.where(which_date: date)
+			sc.update( status: false )
+			
+			Rails.logger.info "page no. #{i}"
+			Rails.logger.info " Program count==> #{Program.count}"
+			Rails.logger.info " Transmitter count==> #{Transmitter.count}"
+			Rails.logger.info " Episode count==> #{Episode.count}"
 		end
 	end
 end
