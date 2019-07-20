@@ -144,8 +144,6 @@ class Transmitter < ApplicationRecord
 				Rails.logger.info e
 				break
 			end
-			sc = Scraping.where(which_date: date)
-			sc.update( status: false )
 			
 			Rails.logger.info "page no. #{i}"
 			Rails.logger.info " Program count==> #{Program.count}"
