@@ -7,6 +7,7 @@ class Transmitter < ApplicationRecord
 	# 	Time.now - 1
 	# end
 
+	# Will get the dates that we have to scrape.
 	def get_scrape_date
 		dates = []
 		for i in -2..6 do
@@ -15,6 +16,7 @@ class Transmitter < ApplicationRecord
 		dates
 	end
 
+	# Will scrape all the dates data 2 past days, 1 today, 4 next days.
 	def scraping_all_data
 		get_scrape_date.each do |date|
 			get_transmitter(date)
@@ -84,6 +86,7 @@ class Transmitter < ApplicationRecord
 		return min  
 	end
 
+	# Method used to scrape the detail information of episode.
 	def create_episode_info
 		ep = Episode.where(is_scraped: false)
 		puts "Left Episode ==> #{ep.count}"
@@ -102,6 +105,7 @@ class Transmitter < ApplicationRecord
 	  Nokogiri::HTML(open(url))
 	end
 
+	# Method used to scrape the transmitter information.
 	def get_transmitter(date=nil)
 		i = 1
 		stop = false

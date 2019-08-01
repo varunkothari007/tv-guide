@@ -1,6 +1,5 @@
 class TvGuidesController < ApplicationController
   def index
-
   	@episode = Episode.paginate(page: params[:page], per_page: 30)
   end
 
@@ -8,6 +7,7 @@ class TvGuidesController < ApplicationController
   	@episode = Episode.find(params[:id])
   end
 
+  # This is the way to start the scrapping from view/browser ...where you pass the date. If other scrapping running then it will ask to wait.
   def scrape
   	if params[:date].present?
       sc = Scraping.where(status: false).count 

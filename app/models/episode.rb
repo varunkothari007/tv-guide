@@ -13,6 +13,7 @@ class Episode < ApplicationRecord
 		self.s3_url= get_signed_url if video_filename.present?
 	end
 
+	# get individual episode information.
 	def get_episode_info
 
 		begin
@@ -47,7 +48,7 @@ class Episode < ApplicationRecord
 	  end
 	end
 
-	# Episode.last.download_video
+	# Download the video from source url
 	def download_video
 		# preview_video_url = "https://video.tvspielfilm.de/ivideo/video/10/9700610_1.mp4"
 
@@ -65,6 +66,7 @@ class Episode < ApplicationRecord
 		end
 	end
 
+	# upload the video from server to S3
 	def upload_video_at_s3(filename, filepath) 
 		begin
 			s3 = Aws::S3::Resource.new
