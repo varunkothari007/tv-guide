@@ -1,11 +1,17 @@
 class Transmitter < ApplicationRecord
 	has_many :programs, dependent: :destroy
 	validates_presence_of :name
+	after_create :save_cid
+
 	require 'open-uri'
 
 	# def past_days
 	# 	Time.now - 1
 	# end
+	def save_cid
+		cid_no = Random.rand(1...100)
+		self.update(cid: cid_no) rescue nil
+	end
 
 	# Will get the dates that we have to scrape.
 	def get_scrape_date

@@ -4,10 +4,17 @@ class Episode < ApplicationRecord
 	has_many :ratings, dependent: :destroy
 	# validates :source_url, uniqueness: true
 	belongs_to :program
-	
+	after_create :save_bid
 	require 'open-uri'
 
 	before_save :store_s3_url
+
+	def save_bid
+		uniqu_id = source_url.split(",").last.gsub(".html","")
+		cid      = program.transmitter.cid.to_i
+		bid_hex  = Digest::MD5.hexdigest("#{cid}" + "_tvsde_" + uniqu_id)
+		self.update(bid: bid_hex)
+	end
 
 	def store_s3_url
 		self.s3_url= get_signed_url if video_filename.present?
