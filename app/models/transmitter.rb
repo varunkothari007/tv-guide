@@ -123,7 +123,7 @@ class Transmitter < ApplicationRecord
 				doc = send_request(url)
 				rows = doc.css("table.info-table tr")
 				j = 0
-				rows.first(5).each do |row|	
+				rows.each do |row|	
 					j+=1
 					next if j == 1
 					#transmitter
