@@ -103,6 +103,7 @@ class Transmitter < ApplicationRecord
 			print "#"
 			i+=1
 			puts "{ 100 done }" if 100 == i
+			sleep(Random.rand(300)/100)
 		end
 		print = "#] Done "
 	end
